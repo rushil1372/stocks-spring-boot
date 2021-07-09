@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Upload CSV File Example</title>
+>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+
+    <script src="auth.js"></script>
+
+</head>
+<body>
+
+<div id="form-container">
+    <input type = "email" placeholder = "email" id="email"/>
+    <input type = "password" placeholder = "password" id="password"/>
+    <button onClick="signUp()" id="signUp"> Sign Up <button>
+    <button onClick="signIn()" id="signIn"> Sign In <button>
+    <button onclick = "googleSignin()">Google SignIn</button>
+    <button onClick="signOut()" id="signOut"> Sign Out <button>
+</div>
+
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <h1>Upload CSV File Example</h1>
+            <form method="POST" th:action="@{/upload}" enctype="multipart/form-data">
+                <div class="form-group mt-3">
+                    <label for="file">Select CSV file</label>
+                    <input type="file" name="file" class="form-control-file" id="file" accept=".csv">
+                </div>
+                <button type="submit" class="btn btn-primary">Import Stocks</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-10 mx-auto">
+            <h1>File Upload Status</h1>
+            <div class="alert alert-danger" role="alert" th:if="${!status}">
+                <strong>Error:</strong>
+                <span th:text="${message}"></span>
+            </div>
+
+            <table class="table table-striped" th:if="${status}">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Series</th>
+                    <th scope="col">Open Price</th>
+                    <th scope="col">Avg Price</th>
+                    <th scope="col">Trades</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stock, i : ${stocks}">
+                    <th scope="row" th:text="${i.index + 1}"></th>
+                    <td th:text="${stock.symbol}"></td>
+                    <td th:text="${stock.series}"></td>
+                    <td th:text="${stock.openprice}"></td>
+                    <td th:text="${stock.avgprice}"></td>
+                    <td th:text="${stock.trades}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
